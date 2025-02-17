@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 # 60511jues
 library - Сайт библиотеки 
 =======
@@ -69,3 +70,7 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 >>>>>>> 95e80f0 (ервый коммит)
+=======
+# 60511jues
+library - Сайт библиотеки 
+>>>>>>> aed16cc97a07148c68ac330e37801d3561861651
