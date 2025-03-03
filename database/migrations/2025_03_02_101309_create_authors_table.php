@@ -9,6 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('authors', function (Blueprint $table) {
+            $table->id();
             $table->text('last_name');
             $table->text('first_name');
             $table->text('middle_name');

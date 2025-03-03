@@ -15,8 +15,7 @@ return new class extends Migration
             $table->text('status');
             $table->unsignedBigInteger('authors_id');
 
-            // Установка внешнего ключа
-            $table->foreign('authors_id')->references('authors_id')->on('authors');
+            $table->foreign('authors_id')->references('id')->on('authors');
         });
     }
 
