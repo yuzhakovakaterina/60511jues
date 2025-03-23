@@ -9,6 +9,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Book extends Model {
     use HasFactory;
+    protected $fillable = [
+        'books_name',
+        'author_id',
+        'isbn',
+        'status',
+    ];
+    public $timestamps = false;
+
     public function author(): BelongsTo {
         return $this->belongsTo(Author::class);
     }
