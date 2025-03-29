@@ -6,12 +6,15 @@ use App\Models\Author;
 use App\Models\Book;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 
 class BookController extends Controller {
-    public function index(Request $request) {
-        $perpage = $request->perpage ?? 2;
-        return view('books', ['books' => Book::paginate($perpage)->withQueryString()]);
+    public function index(Request $request)
+    {
+            $perpage = $request->perpage ?? 2;
+            return view('books', ['books' => Book::paginate($perpage)->withQueryString()]);
     }
+
     public function create() {
         return view('book_create', ['authors' => Author::all()]);
     }
@@ -27,8 +30,8 @@ class BookController extends Controller {
             'middle_name' => 'nullable|max:255',
             'year_of_birth' => 'nullable|integer', ]);
 
-        if ($request->author_id) {
-            $author = Author::find($request->author_id);
+        if ($request->authors_id) {
+            $author = Author::find($request->authors_id);
         }
         else {
             $author = Author::create([
@@ -40,19 +43,27 @@ class BookController extends Controller {
         }
 
         $book = new Book($validated);
-        $book->author_id = $author->id;
+        $book->authors_id = $author->id;
         $book->save();
         return redirect('/books');
     }
 
-    public function edit(string $id) {
-        $book = Book::find($id);
-        $author = Author::find($book->author_id);
+    public function edit(string $id)
+    {
+        if (!Gate::allows('edit-books')) {
+            return redirect('/error')->with('message', 'Доступ к редактированию только для администраторов');
+        }
 
+        $book = Book::findOrFail($id);
+        $author = Author::find($book->authors_id);
         return view('book_edit', ['book' => $book, 'author' => $author]);
     }
 
     public function update(Request $request, string $id) {
+        if (!Gate::allows('edit-books')) {
+            return redirect('/error')->with('message', 'Доступ к обновлению только для администраторов');
+        }
+
         $validated = $request->validate([
             'books_name' => 'required|max:255',
             'isbn' => 'required|max:255',
@@ -79,9 +90,14 @@ class BookController extends Controller {
         return redirect('/books');
     }
 
-    public function destroy(string $id) {
+    public function destroy(string $id)
+    {
+        if (!Gate::allows('delete-books')) {
+            return redirect('/error')->with('message', 'Доступ к удалению только для администраторов');
+        }
+
         DB::table('deliveries')->where('book_id', $id)->delete();
-        Book::destroy($id);
+        Book::findOrFail($id)->delete();
         return redirect('/books');
     }
 }

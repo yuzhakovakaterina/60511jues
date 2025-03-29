@@ -15,7 +15,6 @@
             const newAuthorFields = document.getElementById('newAuthorFields');
             const isNewAuthorSelected = authorSelect.value === "";
 
-            // Автор из списка не выбран, поля видны
             newAuthorFields.classList.toggle('hidden', !isNewAuthorSelected);
             document.querySelectorAll('.new-author-required').forEach(input => {
                 input.required = isNewAuthorSelected;

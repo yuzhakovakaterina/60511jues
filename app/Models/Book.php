@@ -11,14 +11,14 @@ class Book extends Model {
     use HasFactory;
     protected $fillable = [
         'books_name',
-        'author_id',
+        'authors_id',
         'isbn',
         'status',
     ];
     public $timestamps = false;
 
     public function author(): BelongsTo {
-        return $this->belongsTo(Author::class);
+        return $this->belongsTo(Author::class, 'authors_id' );
     }
     public function reader(): BelongsToMany {
         return $this->belongsToMany(Reader::class, 'deliveries');
